@@ -16,6 +16,7 @@ class Search extends Reflux.Component {
 			input: "",
 			showRepos: false,
 			showStarred: false,
+                        showButtons: false,
 			title: ""
 		}
 		this.store = Store
@@ -30,6 +31,7 @@ class Search extends Reflux.Component {
 			let user  = history.location.pathname.replace('/', '')	
 			this.state.input = user
 			Actions.getUser(user)	
+                        this.state.showButtons = true
 		}
 		
   }
@@ -46,6 +48,11 @@ class Search extends Reflux.Component {
 			this.state.title = ""
 			history.push(`/${this.state.input}`)				
 			Actions.getUser(this.state.input)	
+                        if(this.state.input === "") {
+                            this.state.showButtons = false
+                        } else {
+                            this.state.showButtons = true
+                        }
 		},1000)
 	}
 
@@ -93,14 +100,22 @@ class Search extends Reflux.Component {
 					<List key={index} repo={value} />				
 				)
 			})
-		}
+                }
+                let buttons = ""
+                if(this.state.showButtons) {
+                        buttons = (
+                                <div>
+                                        <button onClick={this.clickRepos}>Repos</button>	
+                                        <button onClick={this.clickStarred}>Starred</button>	
+                                </div>
+                        )
+                }
 
     return (
       <div id="main">
 				<input id="search" placeholder="Search for user" type="text" onChange={this.handleChange} />
 				<User user={this.state.user} />
-				<button onClick={this.clickRepos}>Repos</button>	
-				<button onClick={this.clickStarred}>Starred</button>	
+                                {buttons}
 				<h2 id="listTitle">{this.state.title}</h2>
 				{repos}
 				{starred}
