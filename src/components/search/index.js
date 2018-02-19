@@ -26,8 +26,8 @@ class Search extends Reflux.Component {
 	}
 
 	componentDidMount() {
-		if(history.location.pathname !== '/react-reflux-github-api-v3') {
-			let user  = history.location.pathname.replace('/react-reflux-github-api-v3/', '')	
+		if(history.location.pathname !== '/') {
+			let user  = history.location.pathname.replace('/', '')	
 			this.state.input = user
 			Actions.getUser(user)	
 		}
@@ -44,7 +44,7 @@ class Search extends Reflux.Component {
 		clearTimeout(this.search)
 		this.search = setTimeout(() => {
 			this.state.title = ""
-			history.push(`/react-reflux-github-api-v3/${this.state.input}`)				
+			history.push(`/${this.state.input}`)				
 			Actions.getUser(this.state.input)	
 		},1000)
 	}
